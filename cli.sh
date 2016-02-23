@@ -41,6 +41,7 @@ function run() {
     --name $CONTAINER_NAME \
     --publish $HOST_PORT_80:$CONTAINER_PORT_80 \
     --publish $HOST_PORT_443:$CONTAINER_PORT_443 \
+    --volume $PWD/logs:/home/openresty/logs \
     $CONTAINER_NAME
 }
 
