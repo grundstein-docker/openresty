@@ -72,18 +72,25 @@ function nginx-build() {
 }
 
 function magic-build() {
+  echo "start magic build"
+
   for host_dir in $(ls $HOSTS_DIR); do \
     full_dir=$HOSTS_DIR/$host_dir
     if [ -d $full_dir ]; then
       conf_file=$full_dir/nginx
       if [ -f $conf_file ]; then
+        out_file=$OUT_DIR/sites-enabled/$host_dir
+        echo "writing magic host config for host $host_dir to $out_file"
+
         sed \
           -e "s/|HOST_IP|/$(cat $full_dir/IP.txt)/g" \
           $conf_file \
-          > $OUT_DIR/sites-enabled/$host_dir
+          > $out_file
       fi
     fi
   done
+
+  echo "finished magic-build"
 }
 function moon-build() {
   mkdir -p $OUT_DIR;
