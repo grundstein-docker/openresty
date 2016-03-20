@@ -5,6 +5,7 @@ SRC_DIR="$PWD/src"
 NGINX_SRC_DIR="$SRC_DIR/nginx"
 LUA_SRC_DIR="$SRC_DIR/lua"
 LIB_NAME=resty
+HOSTS_DIR="$PWD/../magic/hosts"
 
 source ./ENV.sh
 source ./IPS.sh
@@ -18,6 +19,7 @@ function build {
   asset-build
   moon-build
   nginx-build
+  magic-build
 
   docker build \
     --tag=$CONTAINER_NAME \
@@ -69,6 +71,20 @@ function nginx-build() {
   echo "nginx config finished"
 }
 
+function magic-build() {
+  for host_dir in $(ls $HOSTS_DIR); do \
+    full_dir=$HOSTS_DIR/$host_dir
+    if [ -d $full_dir ]; then
+      conf_file=$full_dir/nginx
+      if [ -f $conf_file ]; then
+        sed \
+          -e "s/|HOST_IP|/$(cat $full_dir/IP.txt)/g" \
+          $conf_file \
+          > $OUT_DIR/sites-enabled/$host_dir
+      fi
+    fi
+  done
+}
 function moon-build() {
   mkdir -p $OUT_DIR;
   moonc \
