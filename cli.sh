@@ -92,6 +92,7 @@ function magic-build() {
 
   echo "finished magic-build"
 }
+
 function moon-build() {
   mkdir -p $OUT_DIR;
   moonc \
