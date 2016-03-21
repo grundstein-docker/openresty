@@ -45,6 +45,10 @@ function run() {
     --publish $HOST_PORT_443:$CONTAINER_PORT_443 \
     --volume $PWD/logs:/home/openresty/logs \
     $CONTAINER_NAME
+
+  ip
+
+  echo "started docker container $CONTAINER_NAME"
 }
 
 function asset-build() {
