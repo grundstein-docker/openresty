@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 OUT_DIR="$PWD/out"
 SRC_DIR="$PWD/src"
@@ -64,12 +64,12 @@ function nginx-build() {
   cp -r $NGINX_SRC_DIR/* $OUT_DIR/
   sed \
     --in-place \
-    -e "s/|HOST_IP|/$MAGIC_GITLAB_IP/g" \
+    -e "s/|SERVER_IP|/$MAGIC_GITLAB_IP/g" \
     $OUT_DIR/sites-enabled/gitlab
 
   sed \
     --in-place \
-    -e "s/|HOST_IP|/$MAGIC_REDMINE_IP/g" \
+    -e "s/|SERVER_IP|/$MAGIC_REDMINE_IP/g" \
     $OUT_DIR/sites-enabled/redmine
 
   echo "nginx config finished"
@@ -87,7 +87,8 @@ function magic-build() {
         echo "writing magic host config for host $host_dir to $out_file"
 
         sed \
-          -e "s/|HOST_IP|/$(cat $full_dir/IP.txt)/g" \
+          -e "s/|SERVER_IP|/$(cat $full_dir/SERVER_IP)/g" \
+          -e "s/|SERVER_NAME|/$(cat $full_dir/SERVER_NAME)/g" \
           $conf_file \
           > $out_file
       fi
